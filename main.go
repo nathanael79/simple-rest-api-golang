@@ -8,13 +8,21 @@ import (
 )
 
 func main() {
-	r := gin.Default()
 	models.ConnectDatabase()
-	r.GET("/books", controllers.FindBooks)
-	r.GET("/books/:id", controllers.FindBook)
-	r.PATCH("/books/:id", controllers.UpdateBook)
-	r.DELETE("/books/:id", controllers.DeleteBook)
-	r.POST("/books", controllers.CreateBook)
+	r := gin.Default()
+
+	public := r.Group("/api")
+	public.GET("/books", controllers.FindBooks)
+	public.GET("/books/:id", controllers.FindBook)
+	public.PATCH("/books/:id", controllers.UpdateBook)
+	public.DELETE("/books/:id", controllers.DeleteBook)
+	public.POST("/books", controllers.CreateBook)
+
+	public.POST("/login", controllers.Login)
+
+	public.POST("/register", controllers.Register)
+
+	public.GET("/users", controllers.GetUsers)
 
 	r.Run()
 }
