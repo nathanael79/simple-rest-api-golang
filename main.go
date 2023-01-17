@@ -2,6 +2,7 @@ package main
 
 import (
 	"simple-api/controllers"
+	"simple-api/middlewares"
 	"simple-api/models"
 
 	"github.com/gin-gonic/gin"
@@ -22,7 +23,9 @@ func main() {
 
 	public.POST("/register", controllers.Register)
 
-	public.GET("/users", controllers.GetUsers)
+	protected := r.Group("/api/admin")
+	protected.Use(middlewares.JwtAuthMiddleware())
+	protected.GET("/user", controllers.GetUsers)
 
 	r.Run()
 }
